@@ -1,0 +1,22 @@
+{
+  "name": "wix-rehab",
+  "version": "1.0.0",
+  "description": "Wix Rehab integration testing framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "jest": "^26.0.1",
+    "lodash": "^4.17.15",
+    "react-component-driver": "^0.10.0",
+    "react-test-renderer": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/runtime": "^7.10.2",
+    "react": "^16.13.1"
+  }
+}
