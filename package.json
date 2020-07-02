@@ -9,14 +9,34 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "jest": "^26.0.1",
-    "lodash": "^4.17.15",
+    "jest-diff": "25.4.0",
     "react-component-driver": "^0.10.0",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "react-test-renderer-utils": "^2.1.0"
+  },
+  "peerDependencies": {
+    "jest": "25.4.0",
+    "wix-react-native-ui-lib": "*",
+    "react-native-navigation": "*",
+    "react-native": "*",
+    "lodash": "*",
+    "jest-summary-reporter": "0.0.2",
+    "jest-circus": "25.4.0",
+    "jest-cli": "25.4.0",
+    "react": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/runtime": "^7.10.2",
+    "jest": "25.4.0",
+    "react-native": "0.62",
+    "lodash": "^4.17.15",
+    "react-native-navigation": "6.4.0",
+    "wix-react-native-ui-lib": "ga",
+    "jest-diff": "25.4.0",
+    "jest-summary-reporter": "0.0.2",
+    "jest-circus": "25.4.0",
+    "jest-cli": "25.4.0",
     "react": "^16.13.1"
   }
 }

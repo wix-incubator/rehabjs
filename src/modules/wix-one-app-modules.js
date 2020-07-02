@@ -32,6 +32,10 @@ export default class WixNetworkModule {
 
   }
 
+  actionsGenerator = () => {
+    return {};
+  }
+
   collectEffects = () => {
     return {[this.effectsKey]: [...this.invokeLog]};
   };

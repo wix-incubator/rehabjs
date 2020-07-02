@@ -3,25 +3,41 @@ import _ from 'lodash';
 class Driver {
 
   modules = [];
+  actions = [];
+  mockedData = {};
 
-  getNetworkOutcome = (input, init) => {
-    return {};
-  };
 
-  registerModules = () => {
-    const RNN = require('./modules/react-native-navigation').default;
-    const WixNetwork = require('./modules/wix-one-app-network').default;
-    const UILib = require('./modules/wix-ui-lib').default;
-    modules.append(new RNN());
-    modules.append(new WixNetwork(this.getNetworkOutcome));
-    modules.append(new UILib());
-  };
+  //TODO we need to come up with some module API validation
+  registerModules = (modules, props, mockedData) => {
+    this.modules = [...modules];
+    this.mockedData = {...mockedData};
+    this.actions = this.modules.map((value) => (value.actionsGenerator(props)));
+  }
+
+  setup = () => {
+    // setupRehab();
+    this.modules.forEach((module) => module.beforeEach(this.mockedData));
+  }
 
   collectLogs = () => {
-    return _.reduce(this.modules, (result, value) => {
-      return {...result, ...value};
-    }, {});
+    const effects = this.modules.reduce((result, value) => {
+      return {...result, ...value.collectEffects()}
+     }, {});
+     return effects;
   };
+
+  registerMethods = (currentObject) => (
+    {
+      ...this.actions.reduce(function (result, action) {
+        const wrappedActions = _.mapValues(action, (func) => async (args) => {
+          func(args);
+          return currentObject;
+        })
+        return {...result, ...wrappedActions};
+      }, {})
+    }
+  );
+
 }
 
 export default function createDriver() {

@@ -24,7 +24,8 @@ const Enter = {
   TextInput: (text, input) => {
     if (input.props.onChange) {
       input.props.onChange({nativeEvent: {text}})
-    } else if (input.props.onChangeText) {
+    } 
+    if (input.props.onChangeText) {
       input.props.onChangeText(text);
     }
   },
@@ -175,4 +176,4 @@ export function findable(ids) {
   return Object.values(ids).filter((value) => typeof value === 'string');
 }
 
-export const findFeedComponents = matchByLastSegmentOfUniqueId;
+export const findComponents = matchByLastSegmentOfUniqueId;

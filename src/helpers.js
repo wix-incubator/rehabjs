@@ -22,10 +22,6 @@ export function asArray(value) {
   return value === undefined ? [] : [value];
 }
 
-export function flushPromises() {
-  return new Promise(setImmediate);
-}
-
 function getOrInstall(object, key) {
   return object[key] = key in object ? object[key] : [];
 }

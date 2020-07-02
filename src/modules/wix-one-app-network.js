@@ -6,24 +6,38 @@ export default class WixNetworkModule {
 
   effectsKey = '[network]';
 
-  constructor(getNetworkOutcome) {
-    this.getNetworkOutcome = getNetworkOutcome;
+  getNetworkOutcome(input, init) {
+    return {};
   }
 
   beforeEach = () => {
     engine.fetch = async (input, init) => {
       const outcome = this.getNetworkOutcome(input, init);
-      networkLog.push(outcome.info || {[input]: init});
+      const defaultResult = {
+        url: input,
+        ...init,
+        body: init.body ? JSON.parse(init.body) : undefined
+      }
+
+      networkLog.push(outcome.info || defaultResult);
       const {json} = outcome;
       return {ok: true, json: () => Promise.resolve(json)};
     };
   };
+
+  actionsGenerator = () => {
+    return {};
+  }
 
   afterEach = () => {
 
   }
 
   collectEffects = () => {
-    return {[this.effectsKey]: [...networkLog]};
+    if (networkLog.length > 0) {
+      return {[this.effectsKey]: [...networkLog]};
+    } else {
+      return {};
+    }
   };
 }

@@ -1,16 +1,18 @@
 import React from 'react';
 import _ from 'lodash';
 import {componentDriver} from 'react-component-driver';
-import {componentLocator, findFeedComponents, filterByLastSegement} from './component-locator';
-import {combine, printable, appendEffects, flushPromises} from './helpers';
-import './jest-extension';
+import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
+import {combine, printable, appendEffects} from './helpers';
+import createDriver from './driver';
+import './modules/setup-module'
+import './jest-extension'
 
-export function createScreenDriver(componentGenerator, props, {app, driverCacheStorage, biEventLog, dispatch, getNetworkOutcome} = {}) {
+export function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
-
-  const driverModules = [];
-
-  // const host = prepareHost({module, driverCacheStorage, biEventLog, getNetworkOutcome});
+  const moduleDriver = createDriver();
+  if(mocksSetup) mocksSetup.forEach((setup) => setup());
+  moduleDriver.registerModules(modules, props);
+  moduleDriver.setup();
 
   class TestScreen extends React.Component {
     state = {renderScreen: true}
@@ -24,17 +26,7 @@ export function createScreenDriver(componentGenerator, props, {app, driverCacheS
     }
   }
 
-  const actions = _.flatMap(driverModules, (result, value) => ({...result, ...value.actionsGenerator()}), {});
-  const componentId = 'under-test';
   const driver = componentDriver(TestScreen, {
-    dispatch(action) {
-      dispatch(action);
-      return this;
-    },
-    execute(...callbacks) {
-      callbacks.forEach((fn) => fn());
-      return this;
-    },
     logVisibleTestIDs() {
       const component = this.getComponent()
 
@@ -74,46 +66,26 @@ export function createScreenDriver(componentGenerator, props, {app, driverCacheS
     run() {
       return this.begin().end();
     },
-    async flushPromises() {
-      jest.runOnlyPendingTimers();
-      await flushPromises();
-      jest.runOnlyPendingTimers();
-      await flushPromises();
-      return this;
-    },
-    async flushPromisesOnce() {
-      jest.runOnlyPendingTimers();
-      await flushPromises();
-      return this;
-    },
-    async collectAllEffects() {
-      jest.runOnlyPendingTimers();
-      await flushPromises();
-      return readHostLogs({});
-    },
-    ...actions.map((a) => ((...args) => {
-      a(...args);
-      return this;
-    }))
+    ...moduleDriver.registerMethods(this)
   });
 
   async function buildResult(inspections, operations) {
     let stage = 0;
     const result = {};
-    const locator = componentLocator(driver, findFeedComponents);
+    const locator = componentLocator(driver, findComponents);
     const firstStep = {name: 'getComponent', args: []};
     const lastStep = {name: 'split', args: ['/']};
 
     for (const {name, args} of [firstStep, ...operations, lastStep]) {
+      const action = locator[name];
       if (name === 'split') {
+        console.log('split')
         if (args[0] !== '/') {
           throw new Error(`split() must be called with argument '/'`);
         }
         appendEffects(result, collectEffects(driver, inspections, stage), stage);
-        stage += 1;
         continue;
       }
-      const action = locator[name];
       if (action === undefined) {
         throw new Error(`Undefined action ${name}(${args.map(printable).join(', ')})`);
       }
@@ -123,17 +95,19 @@ export function createScreenDriver(componentGenerator, props, {app, driverCacheS
     }
 
     driver.unmount();
-
     return result;
   }
 
   function collectModuleEffects() {
-    const effects = _.flatMap(driverModules, (result, value) => ({...result, ...value.collectEffects()}), {});
-    return effects;
+    // const effects = driverModules.reduce((result, value) => {
+    //  return {...result, ...value.collectEffects()}
+    // }, {});
+    // return effects;
+    return moduleDriver.collectLogs();
   }
 
-  function collectEffects(driver, inspections, stage) {
-    return combine(collectModuleEffects(inspections));
+  function collectEffects() {
+    return combine(collectModuleEffects());
   }
 
   function runAnalysis(driver, digest, targets) {
@@ -144,17 +118,13 @@ export function createScreenDriver(componentGenerator, props, {app, driverCacheS
     return result;
   }
 
-  driver.setProps({...props, componentId});
+  driver.setProps({...props});
   driver.setProps = undefined;
   return driver;
 }
 
 export function createTestDriver(defaults) {
-  const initMocks = defaults.initMocks;
-  const enhanceMocks = defaults.mocksEnhancer || ((mocks) => mocks);
-  return ({componentGenerator = defaults.componentGenerator, passProps = {}, stateSeed, mocks = {}} = {}) => {
-    // const state = feedState(_.merge(defaults.stateSeed, stateSeed));
-    // const world = enhanceMocks(initMocks(_.merge(defaults.mocks, mocks)));
-    return componentLocator(createScreenDriver(componentGenerator, passProps), findFeedComponents);
+  return ({componentGenerator = defaults.componentGenerator, passProps = {}, mockedData = {}, modules = defaults.modules, mocksSetup = defaults.mocksSetup} = {}) => {
+    return componentLocator(createScreenDriver(componentGenerator, passProps, modules, mockedData, mocksSetup));
   };
 }
