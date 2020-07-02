@@ -1,4 +1,4 @@
-import {mock } from "react-test-renderer-utils";
+import { mock } from "react-test-renderer-utils";
 
   jest.mock("react-native", () => {
     const RN = jest.requireActual('react-native');
