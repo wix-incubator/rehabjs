@@ -1,31 +1,4 @@
-import { mock } from "react-test-renderer-utils";
-
-  global.engine = {};
-
-  // SILENCED_ERRORS
-  const error = console.error;
-  console.error = function(...args) {
-    // SILENCING act warning triggered by hooks in toggleToast
-    if (
-      args[0].includes &&
-      args[0].includes(
-        "Warning: An update to %s inside a test was not wrapped in act"
-      )
-    ) {
-      return console.warn(args);
-    }
-    const ignored = ["The above error occurred in the"];
-    if (
-      typeof args[0] !== "string" ||
-      ignored.find(prefix => args[0].startsWith(prefix)) === undefined
-    ) {
-      error.apply(console, args);
-      if (args.length === 1 && args[0].name && args[0].message) {
-        throw args[0];
-      }
-      throw new Error(args);
-    }
-  };
+import {act, mock } from "react-test-renderer-utils";
 
   jest.mock("react-native", () => {
     const RN = jest.requireActual('react-native');
@@ -86,6 +59,4 @@ import { mock } from "react-test-renderer-utils";
     return new Promise(setImmediate);
   }
 
-  global.window = undefined;
-  global.fetch = jest.fn();
   global.flushPromises = flushPromises;
