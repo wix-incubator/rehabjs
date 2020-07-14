@@ -7,7 +7,7 @@ import createDriver from './driver';
 import './modules/setup-module'
 import './jest-extension'
 
-export function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
+function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
   const moduleDriver = createDriver();
   if(mocksSetup) mocksSetup.forEach((setup) => setup());
