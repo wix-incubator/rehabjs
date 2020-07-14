@@ -4,7 +4,6 @@ import {componentDriver} from 'react-component-driver';
 import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
 import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
-import './modules/setup-module'
 import './jest-extension'
 
 function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
