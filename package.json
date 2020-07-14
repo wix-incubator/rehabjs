@@ -16,7 +16,6 @@
   },
   "peerDependencies": {
     "jest": "25.4.0",
-    "wix-react-native-ui-lib": "*",
     "react-native-navigation": "*",
     "react-native": "*",
     "lodash": "*",
