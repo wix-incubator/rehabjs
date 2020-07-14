@@ -4,7 +4,9 @@
   "description": "Wix Rehab integration testing framework",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ":",
+    "build": ":",
+    "release": "node scripts/release"
   },
   "author": "",
   "license": "MIT",
@@ -24,11 +26,13 @@
     "@babel/core": "^7.10.2",
     "@babel/runtime": "^7.10.2",
     "jest": "25.4.0",
-    "lodash": "^4.17.15",
-    "jest-diff": "25.4.0",
-    "jest-summary-reporter": "0.0.2",
     "jest-circus": "25.4.0",
     "jest-cli": "25.4.0",
-    "react": "^16.13.1"
+    "jest-diff": "25.4.0",
+    "jest-summary-reporter": "0.0.2",
+    "lodash": "^4.17.15",
+    "react": "^16.13.1",
+    "semver": "^7.3.2",
+    "shell-utils": "^1.0.10"
   }
 }
