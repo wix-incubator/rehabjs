@@ -1,10 +1,18 @@
 import React from 'react';
+import {act} from '@testing-library/react-hooks';
 import _ from 'lodash';
 import {componentDriver} from 'react-component-driver';
 import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
 import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
-import './jest-extension'
+
+const inAct = cb => async (...params) => {
+  let result: any;
+  await act(async () => {
+    result = await cb(...params);
+  });
+  return result;
+};
 
 function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
@@ -44,7 +52,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
       const end = () => {
         expect.hasAssertions();
         return {
-          execute: (inspections) => buildResult(inspections, operations)
+          execute: inAct((inspections) => buildResult(inspections, operations))
         };
       };
       const recorder = new Proxy({}, {
