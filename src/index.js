@@ -9,3 +9,5 @@ export const modules = {
     return require('./modules/react-native').default;
   },
 }
+
+export {legacyJestSetup} from './legacyJestSetup';

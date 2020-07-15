@@ -1,10 +1,18 @@
 import React from 'react';
+import {act} from '@testing-library/react-hooks';
 import _ from 'lodash';
 import {componentDriver} from 'react-component-driver';
 import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
 import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
-import './jest-extension'
+
+const executeScenario = async (scenario) => {
+  let result: any;
+  await act(async () => {
+    result = await scenario.execute();
+  });
+  return result;
+};
 
 function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
@@ -64,6 +72,9 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     },
     run() {
       return this.begin().end();
+    },
+    async execute() {
+      return executeScenario(this.run());
     },
     ...moduleDriver.registerMethods(this)
   });
