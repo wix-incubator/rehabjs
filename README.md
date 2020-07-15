@@ -1,7 +1,7 @@
 Rehab js
 ========
 
-[![Build Status](https://travis-ci.com/wix-incubator/wix-rehab.svg?token=ECstxpHzEZeQwCfcirJ4&branch=master)](https://travis-ci.com/wix-incubator/wix-rehab)
+[![Build Status](https://travis-ci.com/wix-incubator/rehabjs.svg?token=ECstxpHzEZeQwCfcirJ4&branch=master)](https://travis-ci.com/wix-incubator/rehabjs)
 
 Integration testing library for React.
 
@@ -10,7 +10,7 @@ Usage
 -----
 
 ```js
-import {createTestDriver, modules} from 'wix-rehab';
+import {createTestDriver, modules} from 'rehabjs';
 
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./').default,
