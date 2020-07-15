@@ -14,6 +14,8 @@ const inAct = cb => async (...params) => {
   return result;
 };
 
+const flushPromises = () => new Promise(setImmediate);
+
 function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
   const moduleDriver = createDriver();

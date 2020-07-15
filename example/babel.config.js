@@ -1,11 +1,3 @@
-// babel.config.js
 module.exports = {
-  presets: [
-    [
-      'module:metro-react-native-babel-preset'
-    ],
-  ],
-  plugins: [
-    'jest-hoist'
-  ]
+  presets: ['module:metro-react-native-babel-preset'],
 };
