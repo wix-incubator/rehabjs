@@ -23,11 +23,10 @@ const screenDriver = createTestDriver({
 });
 
 describe('Example screen test', () => {
+  const driver = screenDriver({passProps: {componentId: 'test', message: 'Hello'}});
+  const scenario = driver.run();
   it('Shows overlay on render', async () => {
-    const result = await screenDriver({
-      passProps: {componentId: 'test', message: 'Hello'},
-    }).execute();
-    expect(result).toEqual({
+    expect(await scenario.execute()).toEqual({
       '[navigation]': [
         {
           overlays: [

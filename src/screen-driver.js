@@ -6,10 +6,10 @@ import {componentLocator, findComponents, filterByLastSegement} from './componen
 import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
 
-const executeScenario = async (scenario) => {
+const inAct = cb => async (...params) => {
   let result: any;
   await act(async () => {
-    result = await scenario.execute();
+    result = await cb(...params);
   });
   return result;
 };
@@ -52,7 +52,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
       const end = () => {
         expect.hasAssertions();
         return {
-          execute: (inspections) => buildResult(inspections, operations)
+          execute: inAct((inspections) => buildResult(inspections, operations))
         };
       };
       const recorder = new Proxy({}, {
@@ -72,9 +72,6 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     },
     run() {
       return this.begin().end();
-    },
-    async execute() {
-      return executeScenario(this.run());
     },
     ...moduleDriver.registerMethods(this)
   });
