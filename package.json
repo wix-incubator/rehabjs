@@ -1,7 +1,7 @@
 {
-  "name": "wix-rehab",
+  "name": "rehabjs",
   "version": "0.1.0",
-  "description": "Wix Rehab integration testing framework",
+  "description": "Rehab js integration testing framework for React",
   "main": "src/index.js",
   "scripts": {
     "test": ":",
