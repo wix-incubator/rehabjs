@@ -23,7 +23,7 @@ describe('Home', () => {
   it('pushes Hello screen', async () => {
     const driver = screenDriver({passProps: {componentId: 'test'}});
 
-    const scenario = driver.begin().press('pushScreen').end();
+    const scenario = driver.begin().click('pushScreen').end();
 
     expect(await scenario.execute()).toEqual({
       '[navigation]': [

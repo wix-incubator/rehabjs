@@ -118,6 +118,10 @@ export function componentLocator(driver, findComponents) {
       assertFound(components, testID),
       simulateComponentEvent(select(components, selector), {event: 'onPress'})
     ),
+    click: ({components, testID}) => (selector = 0) => fluent(
+      assertFound(components, testID),
+      simulateComponentEvent(select(components, selector), {event: 'onClick'})
+    ),
     play: ({components, testID}) => (selector = 0) => fluent(
       assertFound(components, testID),
       simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})
