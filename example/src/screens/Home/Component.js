@@ -4,20 +4,13 @@ import {
   ScrollView,
   View,
   Text,
-  Button as RNButton,
+  Button,
   Image,
 } from 'react-native';
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {useHooks} from './useHooks';
-
-// TODO: Hack to make component-locator work
-const Button = (props) => (
-  <View {...props}>
-    <RNButton {...props} />
-  </View>
-);
 
 export const Component = ({componentId}) => {
   const {onPushScreenPress, user} = useHooks({componentId});
