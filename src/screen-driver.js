@@ -7,7 +7,7 @@ import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
 
 const inAct = cb => async (...params) => {
-  let result: any;
+  let result;
   await act(async () => {
     result = await cb(...params);
   });

@@ -1,3 +1,8 @@
+import {mockGlobal} from '../utils/mockGlobal';
+
+mockGlobal('fetch', jest.fn());
+global.fetch = 1;
+
 export default class FetchModule {
 
   constructor({getFetchResult = (input, init) => undefined} = {}) {
@@ -11,24 +16,19 @@ export default class FetchModule {
   beforeEach = () => {
     this.networkLog = [];
 
-    if (!global.fetch) {
-      global.fetch = () => undefined;
-    }
-    this.spy = jest.spyOn(global, 'fetch');
-    this.spy.mockImplementation(async (input, init = {}) => {
-      const result = this.getFetchResult(input, init);
-
+    global.fetch.mockImplementation(async (input, init = {}) => {
       this.networkLog.push({
         url: input,
         ...init,
         body: init.body ? JSON.parse(init.body) : undefined
       });
+
+      const result = this.getFetchResult(input, init);
       return {ok: true, json: () => Promise.resolve(result)};
     })
   };
 
   afterEach = () => {
-    this.spy.mockRestore();
   }
 
   collectEffects = () => {

@@ -1,5 +1,8 @@
 import {Navigation} from 'react-native-navigation';
 import {combine, asArray} from '../helpers';
+import './react-native';
+
+jest.mock('react-native-navigation');
 
 function append(container, prop, value) {
   const target = container[prop] || [];
@@ -14,41 +17,40 @@ export default class ReactNativeNavigationModule {
 
   beforeEach = () => {
     const screen = this.screen;
-    Navigation.mergeOptions = jest.fn();
-    Navigation.showModal = async (layout) => {
+    Navigation.showModal.mockImplementation(async (layout) => {
       screen.name = layout.stack.children[0].component.name;
       screen.passProps = layout.stack.children[0].component.passProps;
       screen.layout = layout;
       screen.operation = 'showModal'
-    };
-    Navigation.push = async (componentId, layout) => {
+    });
+    Navigation.push.mockImplementation(async (componentId, layout) => {
       screen.name = layout.component.name;
       screen.passProps = layout.component.passProps;
       screen.layout = layout;
       screen.operation = 'push'
-    };
-    Navigation.pop = async (componentId) => {
+    });
+    Navigation.pop.mockImplementation(async (componentId) => {
       screen.name = `caller:${componentId}`;
       screen.passProps = undefined;
       screen.layout = undefined;
       screen.operation = 'pop'
-    };
-    Navigation.popToRoot = async (componentId) => {
+    });
+    Navigation.popToRoot.mockImplementation(async (componentId) => {
       screen.name = `caller:${componentId}`;
       screen.passProps = undefined;
       screen.layout = undefined;
       screen.operation = 'popToRoot'
-    };
-    Navigation.dismissModal = async (componentId) => {
+    });
+    Navigation.dismissModal.mockImplementation(async (componentId) => {
       screen.name = `caller:${componentId}`;
       screen.passProps = undefined;
       screen.layout = undefined;
       screen.operation = 'dismissModal'
-    };
-    Navigation.showOverlay = async (layout) => {
+    });
+    Navigation.showOverlay.mockImplementation(async (layout) => {
       const {name, passProps} = layout.component;
       append(screen, 'overlays', {name, passProps});
-    };
+    });
   };
 
   afterEach = () => {
