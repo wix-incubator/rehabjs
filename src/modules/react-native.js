@@ -1,5 +1,15 @@
 import {Alert} from 'react-native';
 
+jest.mock("react-native", () => {
+  const RN = jest.requireActual('react-native');
+  RN.AccessibilityInfo.isScreenReaderEnabled = () => new Promise(() => false);
+
+  RN.NativeModules.RNDeviceInfo = {};
+  RN.NativeModules.RNGestureHandlerModule = {};
+  RN.NativeModules.StatusBarManager.getHeight = jest.fn();
+  return RN;
+});
+
 const uilibLog = [];
 
 const Analyzers = {

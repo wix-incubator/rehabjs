@@ -7,7 +7,7 @@ import {combine, printable, appendEffects} from './helpers';
 import createDriver from './driver';
 
 const inAct = cb => async (...params) => {
-  let result: any;
+  let result;
   await act(async () => {
     result = await cb(...params);
   });
@@ -88,7 +88,6 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     for (const {name, args} of [firstStep, ...operations, lastStep]) {
       const action = locator[name];
       if (name === 'split') {
-        console.log('split')
         if (args[0] !== '/') {
           throw new Error(`split() must be called with argument '/'`);
         }

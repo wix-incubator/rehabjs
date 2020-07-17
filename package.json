@@ -2,10 +2,10 @@
   "name": "rehabjs",
   "version": "0.1.0",
   "description": "Rehab js integration testing framework for React",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": ":",
-    "build": ":",
+    "build": "babel src --out-dir dist",
     "release": "node scripts/release"
   },
   "author": "",
@@ -24,15 +24,11 @@
     "react": "^16.13.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.2",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/preset-env": "^7.10.4",
     "@babel/runtime": "^7.10.2",
-    "jest": "25.4.0",
-    "jest-circus": "25.4.0",
-    "jest-cli": "25.4.0",
-    "jest-diff": "25.4.0",
-    "jest-summary-reporter": "0.0.2",
-    "lodash": "^4.17.15",
-    "react": "^16.13.1",
     "semver": "^7.3.2",
     "shell-utils": "^1.0.10"
   }
