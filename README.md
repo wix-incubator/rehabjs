@@ -26,4 +26,5 @@ Rehab is an easy to use Integration testing Framework that applies following app
 Usage
 -----
 
-See [example/src/screens/Home/it.test.js](/example/src/screens/Home/it.test.js)
+See [with-react-native](/examples/with-react-native/src/screens/Home/it.test.js)
+Work in progress [with-react](/examples/with-react/README.md)
