@@ -3,7 +3,7 @@ import {act} from '@testing-library/react-hooks';
 import _ from 'lodash';
 import {componentDriver} from 'react-component-driver';
 import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
-import {combine, printable, appendEffects} from './helpers';
+import {combine, printable, appendEffects} from './utils/helpers';
 import createDriver from './driver';
 
 const inAct = cb => async (...params) => {
