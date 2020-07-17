@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "preinstall": "cd .. && npm run build && mv $(npm pack) example/rehabjs.tgz",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -23,7 +24,7 @@
     "jest": "^25.5.4",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "16.13.1",
-    "rehabjs": "^0.1.2"
+    "rehabjs": "file:./rehabjs.tgz"
   },
   "jest": {
     "preset": "react-native",
