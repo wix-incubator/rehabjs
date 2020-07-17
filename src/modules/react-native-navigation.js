@@ -1,5 +1,5 @@
 import {Navigation} from 'react-native-navigation';
-import {combine, asArray} from '../helpers';
+import {combine, asArray} from '../utils/helpers';
 import './react-native';
 
 jest.mock('react-native-navigation');
