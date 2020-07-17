@@ -50,6 +50,14 @@ function runAnalysis(driver, digest, targets) {
   return result;
 }
 
+const simulateComponentEvent = (component, {event, args = []}) => {
+  if (component.props.enabled === false || component.props.disabled === true) {
+    throw new Error(`Cannot call ${event} on disabled component`);
+  }
+  component.props[event](...args);
+  jest.runOnlyPendingTimers();
+};
+
 export default class ReactNativeModule {
   effectsKey = '[react-native]';
 
@@ -63,12 +71,58 @@ export default class ReactNativeModule {
     return {
       confirmAlert: () => {
         Alert.alert.mock.calls[0][2][1].onPress();
+<<<<<<< HEAD
         return this;
+=======
+      },
+      find: ({findComponent}) => (selector = 0) => {
+        return findComponent(selector);
+      },
+      press: ({components, testID}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(select(components, selector), {event: 'onPress'})
+      },
+      click: ({findComponent}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(component, {event: 'onClick'})
+      },
+      play: ({components, testID}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})
+      },
+      longPress: ({components, testID}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(select(components, selector), {event: 'onLongPress'})
+      },
+      enter: ({components, testID}) => (text) => {
+        const component = findComponent(selector);
+        enterInputText(components[0], text)
+      },
+      enterRC:({components, testID}) => (isEmpty) => {
+        const component = findComponent(selector);
+        enterRCContent(components[0], isEmpty)
+      },
+      focus: ({components, testID}) => () => {
+        const component = findComponent(selector);
+        focus(components[0])
+      },
+      scroll: ({components, testID}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(select(components, selector), scrollEvent(selector))
+      },
+      lay: ({components, testID}) => (selector = 0) => {
+        const component = findComponent(selector);
+        simulateComponentEvent(select(components, selector), layoutEvent(selector))
+      },
+      choose: ({findActionSheetItem}) => (selector) => {
+        const action = findActionSheetItem(selector);
+        action.onPress();
+>>>>>>> Move actions to modules
       },
     };
   };
 
   collectEffects = () => {
-    return {[this.effectsKey]: [...uilibLog]};
+    return uilibLog.length > 0 ? {[this.effectsKey]: [...uilibLog]} : {};
   };
 }

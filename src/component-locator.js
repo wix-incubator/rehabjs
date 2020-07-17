@@ -53,13 +53,6 @@ function layoutEvent({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} =
   };
 }
 
-const simulateComponentEvent = (component, {event, args = []}) => {
-  if (component.props.enabled === false || component.props.disabled === true) {
-    throw new Error(`Cannot call ${event} on disabled component`);
-  }
-  component.props[event](...args);
-  jest.runOnlyPendingTimers();
-};
 const enterInputText = (input, text) => {
   const handler = Enter[input.type];
   handler(text, input);
@@ -113,18 +106,6 @@ export function componentLocator(driver, findComponents) {
     }
   };
   const methods = {
-    click: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onClick'})),
-    play: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})),
-    enter: ({components, testID}) => (text) => fluent(assertFound(components, testID), enterInputText(components[0], text)),
-    enterRC: ({components, testID}) => (isEmpty) => fluent(assertFound(components, testID), enterRCContent(components[0], isEmpty)),
-    focus: ({components, testID}) => () => fluent(assertFound(components, testID), focus(components[0])),
-    scroll: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), scrollEvent(selector))),
-    lay: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), layoutEvent(selector))),
-    choose: ({actions, testID}) => () => fluent(assertActionFound(actions, testID), pressAction(actions[0])),
   };
   const selectFinder = (method) => (method === 'choose' ? findActionSheetOptions : findComponents);
   const methodNames = Object.keys(methods);
