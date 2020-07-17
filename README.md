@@ -1,4 +1,4 @@
-Rehab js
+RehabJs
 ========
 
 [![Build Status](https://travis-ci.com/wix-incubator/rehabjs.svg?token=ECstxpHzEZeQwCfcirJ4&branch=master)](https://travis-ci.com/wix-incubator/rehabjs)
