@@ -26,12 +26,11 @@ class Driver {
      return effects;
   };
 
-  registerMethods = (currentObject) => (
+  registerMethods = (bindApi) => (
     {
-      ...this.actions.reduce(function (result, action) {
-        const wrappedActions = _.mapValues(action, (func) => async (args) => {
-          func(args);
-          return currentObject;
+      ...this.actions.reduce((result, action) => {
+        const wrappedActions = _.mapValues(action, (func, name) => async (args) => {
+          return bindApi(func, args);
         })
         return {...result, ...wrappedActions};
       }, {})

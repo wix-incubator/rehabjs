@@ -16,6 +16,23 @@ const inAct = cb => async (...params) => {
 
 const flushPromises = () => new Promise(setImmediate);
 
+const getPublicLocatorApi = (driver) => ({
+  findComponent: (suffix) => {
+    const components = findComponents(driver, suffix).components;
+    if (components.length === 0) {
+      throw new Error(`Component ${suffix} not found`);
+    }
+    if (components.length > 1) {
+      throw new Error(`More then one component ${suffix} found`);
+    }
+    return components[0];
+  },
+  findActionSheetItem: (suffix) => {
+    // TODO: implement findActionSheetItem
+    throw new Error('Not implemented');
+  }
+})
+
 function createScreenDriver(componentGenerator, props, modules, mockedData, mocksSetup) {
   jest.useFakeTimers();
   const moduleDriver = createDriver();
@@ -75,7 +92,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     run() {
       return this.begin().end();
     },
-    ...moduleDriver.registerMethods(this)
+    ...moduleDriver.registerMethods((func, args) => func(getPublicLocatorApi(driver))(args))
   });
 
   async function buildResult(inspections, operations) {
