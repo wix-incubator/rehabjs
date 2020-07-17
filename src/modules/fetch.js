@@ -1,7 +1,6 @@
 import {mockGlobal} from '../utils/mockGlobal';
 
 mockGlobal('fetch', jest.fn());
-global.fetch = 1;
 
 export default class FetchModule {
 
