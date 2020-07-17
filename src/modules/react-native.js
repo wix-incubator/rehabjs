@@ -78,7 +78,7 @@ export default class ReactNativeModule {
       find: ({findComponent}) => (selector = 0) => {
         return findComponent(selector);
       },
-      press: ({components, testID}) => (selector = 0) => {
+      press: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
         simulateComponentEvent(select(components, selector), {event: 'onPress'})
       },
@@ -86,31 +86,31 @@ export default class ReactNativeModule {
         const component = findComponent(selector);
         simulateComponentEvent(component, {event: 'onClick'})
       },
-      play: ({components, testID}) => (selector = 0) => {
+      play: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
         simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})
       },
-      longPress: ({components, testID}) => (selector = 0) => {
+      longPress: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
         simulateComponentEvent(select(components, selector), {event: 'onLongPress'})
       },
-      enter: ({components, testID}) => (text) => {
+      enter: ({findComponent}) => (text) => {
         const component = findComponent(selector);
         enterInputText(components[0], text)
       },
-      enterRC:({components, testID}) => (isEmpty) => {
+      enterRC:({findComponent}) => (isEmpty) => {
         const component = findComponent(selector);
         enterRCContent(components[0], isEmpty)
       },
-      focus: ({components, testID}) => () => {
+      focus: ({findComponent}) => () => {
         const component = findComponent(selector);
         focus(components[0])
       },
-      scroll: ({components, testID}) => (selector = 0) => {
+      scroll: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
         simulateComponentEvent(select(components, selector), scrollEvent(selector))
       },
-      lay: ({components, testID}) => (selector = 0) => {
+      lay: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
         simulateComponentEvent(select(components, selector), layoutEvent(selector))
       },
