@@ -33,26 +33,6 @@ const Enter = {
   },
 };
 
-function scrollEvent({to}) {
-  if (to === 'end') {
-    return {event: 'onEndReached'};
-  }
-  return {
-    event: 'onScroll',
-    args: [{nativeEvent: {contentOffset: {y: to}, contentSize: {}, layoutMeasurement: {}, contentInset: {}}}],
-  };
-}
-
-function layoutEvent({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} = {}) {
-  if (height === undefined) {
-    throw new Error('Should define at least height to simulate component layout');
-  }
-  return {
-    event: 'onLayout',
-    args: [{nativeEvent: {layout: {x, y, width, height}}, mockEvent: {pageX, pageY}}],
-  };
-}
-
 const enterInputText = (input, text) => {
   const handler = Enter[input.type];
   handler(text, input);

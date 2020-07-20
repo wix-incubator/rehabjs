@@ -58,6 +58,26 @@ const simulateComponentEvent = (component, {event, args = []}) => {
   jest.runOnlyPendingTimers();
 };
 
+const scrollEvent = ({to}) => {
+  if (to === 'end') {
+    return {event: 'onEndReached'};
+  }
+  return {
+    event: 'onScroll',
+    args: [{nativeEvent: {contentOffset: {y: to}, contentSize: {}, layoutMeasurement: {}, contentInset: {}}}]
+  };
+};
+
+const layoutEvent = ({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} = {}) => {
+  if (height === undefined) {
+    throw new Error('Should define at least height to simulate component layout');
+  }
+  return {
+    event: 'onLayout',
+    args: [{nativeEvent: {layout: {x, y, width, height}}, mockEvent: {pageX, pageY}}]
+  };
+};
+
 export default class ReactNativeModule {
   effectsKey = '[react-native]';
 
@@ -80,7 +100,7 @@ export default class ReactNativeModule {
       },
       press: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
-        simulateComponentEvent(select(components, selector), {event: 'onPress'})
+        simulateComponentEvent(component, {event: 'onPress'})
       },
       click: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
@@ -88,11 +108,11 @@ export default class ReactNativeModule {
       },
       play: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
-        simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})
+        simulateComponentEvent(component, {event: 'onPlayPress'})
       },
       longPress: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
-        simulateComponentEvent(select(components, selector), {event: 'onLongPress'})
+        simulateComponentEvent(component, {event: 'onLongPress'})
       },
       enter: ({findComponent}) => (text) => {
         const component = findComponent(selector);
@@ -108,11 +128,11 @@ export default class ReactNativeModule {
       },
       scroll: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
-        simulateComponentEvent(select(components, selector), scrollEvent(selector))
+        simulateComponentEvent(component, scrollEvent(selector))
       },
       lay: ({findComponent}) => (selector = 0) => {
         const component = findComponent(selector);
-        simulateComponentEvent(select(components, selector), layoutEvent(selector))
+        simulateComponentEvent(component, layoutEvent(selector))
       },
       choose: ({findActionSheetItem}) => (selector) => {
         const action = findActionSheetItem(selector);
