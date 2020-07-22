@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "preinstall": "cd .. && npm run build && mv $(npm pack) example/rehabjs.tgz",
+    "preinstall": "cd ../.. && npm run build && mv $(npm pack) examples/with-react-native/rehabjs.tgz",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",

@@ -1,6 +1,6 @@
 import {Navigation} from 'react-native-navigation';
 import {useCallback, useState, useEffect} from 'react';
-import * as screens from '..';
+import * as screens from '../index';
 import {getUser} from '../../services/user'
 
 export const useHooks = ({componentId}) => {

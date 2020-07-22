@@ -4,7 +4,7 @@
   "description": "Rehab js integration testing framework for React",
   "main": "dist/index.js",
   "scripts": {
-    "test": "cd example && npm i && npm t",
+    "test": "cd examples/with-react-native && npm i && npm t",
     "build": "babel src --out-dir dist",
     "release": "node scripts/release"
   },
