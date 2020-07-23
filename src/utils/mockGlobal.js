@@ -17,4 +17,4 @@ export const mockGlobal = (key, implementation) => {
       delete global[key];
     }
   });
-}
+};

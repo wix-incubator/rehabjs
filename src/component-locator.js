@@ -11,9 +11,12 @@ export function matchByLastSegmentOfUniqueId(driver, suffix) {
   const foundComponents = filterByLastSegement(driver, suffix);
   const matchedIDs = _.uniq(foundComponents.map((c) => c.props.testID));
   switch (matchedIDs.length) {
-    case 0: return {components: [], testID: `"...${suffix}"`};
-    case 1: return {components: foundComponents, testID: matchedIDs[0]};
-    default: throw new Error(`Cannot select component, multiple testID options available ${matchedIDs.join('/')}`);
+    case 0:
+      return {components: [], testID: `"...${suffix}"`};
+    case 1:
+      return {components: foundComponents, testID: matchedIDs[0]};
+    default:
+      throw new Error(`Cannot select component, multiple testID options available ${matchedIDs.join('/')}`);
   }
 }
 
@@ -23,15 +26,15 @@ const Enter = {
   Input10: (text, input) => input.props.onChange({nativeEvent: {text}}),
   TextInput: (text, input) => {
     if (input.props.onChange) {
-      input.props.onChange({nativeEvent: {text}})
-    } 
+      input.props.onChange({nativeEvent: {text}});
+    }
     if (input.props.onChangeText) {
       input.props.onChangeText(text);
     }
   },
   AutoGrowingTextInput: (text, input) => {
     input.props.onChangeText(text);
-  }
+  },
 };
 
 function scrollEvent({to}) {
@@ -40,7 +43,7 @@ function scrollEvent({to}) {
   }
   return {
     event: 'onScroll',
-    args: [{nativeEvent: {contentOffset: {y: to}, contentSize: {}, layoutMeasurement: {}, contentInset: {}}}]
+    args: [{nativeEvent: {contentOffset: {y: to}, contentSize: {}, layoutMeasurement: {}, contentInset: {}}}],
   };
 }
 
@@ -50,7 +53,7 @@ function layoutEvent({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} =
   }
   return {
     event: 'onLayout',
-    args: [{nativeEvent: {layout: {x, y, width, height}}, mockEvent: {pageX, pageY}}]
+    args: [{nativeEvent: {layout: {x, y, width, height}}, mockEvent: {pageX, pageY}}],
   };
 }
 
@@ -66,7 +69,7 @@ const enterInputText = (input, text) => {
   handler(text, input);
 };
 const enterRCContent = (input, content) => {
-  const handler = ((content) => input.props.onTestContentChange(content));
+  const handler = (content) => input.props.onTestContentChange(content);
   handler(content, input);
 };
 
@@ -75,9 +78,12 @@ const pressAction = (action) => action.onPress();
 
 function findActionSheetOptions(driver, searchTerm) {
   const sheets = driver.filterByType('ActionSheet');
-  const actions = sheets.map(getOptions).reduce(flatten, []).filter((action) => {
-    return action && action.testID && action.testID.includes(searchTerm);
-  });
+  const actions = sheets
+    .map(getOptions)
+    .reduce(flatten, [])
+    .filter((action) => {
+      return action && action.testID && action.testID.includes(searchTerm);
+    });
   return {actions, testID: searchTerm};
 }
 
@@ -111,51 +117,25 @@ export function componentLocator(driver, findComponents) {
     }
   };
   const methods = {
-    find: ({components}) => (selector = 0) => final(
-      select(components, selector)
-    ),
-    press: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), {event: 'onPress'})
-    ),
-    click: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), {event: 'onClick'})
-    ),
-    play: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})
-    ),
-    longPress: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), {event: 'onLongPress'})
-    ),
-    enter: ({components, testID}) => (text) => fluent(
-      assertFound(components, testID),
-      enterInputText(components[0], text)
-    ),
-    enterRC:({components, testID}) => (isEmpty) => fluent(
-      assertFound(components, testID),
-      enterRCContent(components[0], isEmpty)
-    ),
-    focus: ({components, testID}) => () => fluent(
-      assertFound(components, testID),
-      focus(components[0])
-    ),
-    scroll: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), scrollEvent(selector))
-    ),
-    lay: ({components, testID}) => (selector = 0) => fluent(
-      assertFound(components, testID),
-      simulateComponentEvent(select(components, selector), layoutEvent(selector))
-    ),
-    choose: ({actions, testID}) => () => fluent(
-      assertActionFound(actions, testID),
-      pressAction(actions[0])
-    ),
+    find: ({components}) => (selector = 0) => final(select(components, selector)),
+    press: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPress'})),
+    click: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onClick'})),
+    play: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})),
+    longPress: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onLongPress'})),
+    enter: ({components, testID}) => (text) => fluent(assertFound(components, testID), enterInputText(components[0], text)),
+    enterRC: ({components, testID}) => (isEmpty) => fluent(assertFound(components, testID), enterRCContent(components[0], isEmpty)),
+    focus: ({components, testID}) => () => fluent(assertFound(components, testID), focus(components[0])),
+    scroll: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), scrollEvent(selector))),
+    lay: ({components, testID}) => (selector = 0) =>
+      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), layoutEvent(selector))),
+    choose: ({actions, testID}) => () => fluent(assertActionFound(actions, testID), pressAction(actions[0])),
   };
-  const selectFinder = (method) => method === 'choose' ? findActionSheetOptions : findComponents;
+  const selectFinder = (method) => (method === 'choose' ? findActionSheetOptions : findComponents);
   const methodNames = Object.keys(methods);
   const findMethodForName = (name) => (result, methodName) => {
     if (name === methodName) {
@@ -171,7 +151,7 @@ export function componentLocator(driver, findComponents) {
   const provider = new Proxy(driver, {
     get(driver, name) {
       return methodNames.reduce(findMethodForName(name), driver[name]);
-    }
+    },
   });
   return provider;
 }

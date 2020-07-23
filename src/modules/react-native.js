@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 
-jest.mock("react-native", () => {
+jest.mock('react-native', () => {
   const RN = jest.requireActual('react-native');
   RN.AccessibilityInfo.isScreenReaderEnabled = () => new Promise(() => false);
 
@@ -16,7 +16,7 @@ const Analyzers = {
   '|views|': (found) => found.length,
   '(text)': (found) => found.map(collectText).map(asDelimitedText).join(' '),
   '(images)': (found) => nullify(found.map(_.get(['props', 'source', 'uri'])).join('|')),
-  '(inspect:selectionState)': (found) => found.map((e) => e.props.selected === true ? 'selected' : 'unselected'),
+  '(inspect:selectionState)': (found) => found.map((e) => (e.props.selected === true ? 'selected' : 'unselected')),
 };
 
 function analyseViewHierarchy(driver, inspections, stage) {
@@ -51,23 +51,20 @@ function runAnalysis(driver, digest, targets) {
 }
 
 export default class ReactNativeModule {
-
   effectsKey = '[react-native]';
 
   beforeEach = () => {
     Alert.alert = jest.fn();
   };
 
-  afterEach = () => {
-
-  }
+  afterEach = () => {};
 
   actionsGenerator = () => {
     return {
       confirmAlert: () => {
         Alert.alert.mock.calls[0][2][1].onPress();
         return this;
-      }
+      },
     };
   };
 

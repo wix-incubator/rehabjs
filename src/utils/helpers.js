@@ -1,8 +1,8 @@
-
 export function hasData(value) {
   if (Array.isArray(value)) {
     return value.length > 0;
-  } if (typeof value === 'object' && value !== null) {
+  }
+  if (typeof value === 'object' && value !== null) {
     return Object.keys(value).length > 0;
   }
   return true;
@@ -23,13 +23,13 @@ export function asArray(value) {
 }
 
 function getOrInstall(object, key) {
-  return object[key] = key in object ? object[key] : [];
+  return (object[key] = key in object ? object[key] : []);
 }
 
 export function appendItems(array, items, previousMerges) {
   const last = array.length > 0 ? array[array.length - 1] : undefined;
   const isMarker = typeof last === 'string' && /^\/+$/.test(last);
-  const marker = (isMarker || previousMerges === 0) ? [] : array.length > 0 ? ['/'] : ['/'.repeat(previousMerges)];
+  const marker = isMarker || previousMerges === 0 ? [] : array.length > 0 ? ['/'] : ['/'.repeat(previousMerges)];
   if (isMarker) {
     array[array.length - 1] = last + '/';
   }
