@@ -3,10 +3,12 @@ import {ScrollView} from 'react-native';
 
 import {LearnMoreLinks} from 'react-native/Libraries/NewAppScreen';
 
-export const Component = ({componentId}) => {
+const Component = ({componentId}) => {
   return (
     <ScrollView>
       <LearnMoreLinks />
     </ScrollView>
   );
 };
+
+export default Component;

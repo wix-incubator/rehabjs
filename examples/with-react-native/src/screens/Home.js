@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -9,11 +9,26 @@ import {
 } from 'react-native';
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+import {Navigation} from 'react-native-navigation';
+import * as screens from './index';
+import {getUser} from '../services/user';
 
-import {useHooks} from './useHooks';
+const Component = ({componentId}) => {
+  const [user, setUser] = useState(undefined);
 
-export const Component = ({componentId}) => {
-  const {onPushScreenPress, user} = useHooks({componentId});
+  useEffect(() => {
+    getUser().then(setUser);
+  }, []);
+
+  const onPushScreenPress = useCallback(() => {
+    Navigation.push(componentId, {
+      component: {
+        name: screens.HELLO.id,
+        passProps: {},
+      },
+    });
+  }, [componentId]);
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -45,6 +60,8 @@ export const Component = ({componentId}) => {
     </ScrollView>
   );
 };
+
+export default Component;
 
 const styles = StyleSheet.create({
   scrollView: {
