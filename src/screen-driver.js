@@ -71,7 +71,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
               return recorder;
             };
           },
-        }
+        },
       );
       return recorder;
     },

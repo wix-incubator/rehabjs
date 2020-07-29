@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "cd examples/with-react-native && npm i && npm t",
+    "prettier": "prettier --write ./src/*",
     "build": "babel src --out-dir dist",
     "release": "node scripts/release"
   },
