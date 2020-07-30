@@ -3,7 +3,6 @@ import {mockGlobal} from '../utils/mockGlobal';
 mockGlobal('fetch', jest.fn());
 
 export default class FetchModule {
-
   constructor({getFetchResult = (input, init) => undefined} = {}) {
     this.getFetchResult = getFetchResult;
   }
@@ -19,16 +18,15 @@ export default class FetchModule {
       this.networkLog.push({
         url: input,
         ...init,
-        body: init.body ? JSON.parse(init.body) : undefined
+        body: init.body ? JSON.parse(init.body) : undefined,
       });
 
       const result = this.getFetchResult(input, init);
       return {ok: true, json: () => Promise.resolve(result)};
-    })
+    });
   };
 
-  afterEach = () => {
-  }
+  afterEach = () => {};
 
   collectEffects = () => {
     if (this.networkLog.length > 0) {
@@ -39,5 +37,5 @@ export default class FetchModule {
 
   actionsGenerator = () => {
     return {};
-  }
+  };
 }

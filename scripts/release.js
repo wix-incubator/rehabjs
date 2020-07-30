@@ -37,9 +37,7 @@ function versionTagAndPublish() {
   console.log(`current published version: ${currentPublished}`);
 
   const incIdentifier = packagePrereleaseComponent ? 'prerelease' : VERSION_INC;
-  const version = semver.gt(packageVersion, currentPublished) ?
-    packageVersion :
-    semver.inc(currentPublished, incIdentifier, packagePrereleaseComponent);
+  const version = semver.gt(packageVersion, currentPublished) ? packageVersion : semver.inc(currentPublished, incIdentifier, packagePrereleaseComponent);
   bumpVersion(version);
 }
 
