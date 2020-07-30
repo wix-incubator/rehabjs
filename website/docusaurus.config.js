@@ -4,8 +4,8 @@ module.exports = {
   url: 'https://github.com/wix-incubator/rehabjs',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'Wix',
-  projectName: 'RehabJS',
+  organizationName: 'wix-incubator',
+  projectName: 'rehabjs',
   themeConfig: {
     navbar: {
       title: 'RehabJS',
