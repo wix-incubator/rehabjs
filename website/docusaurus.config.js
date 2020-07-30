@@ -1,14 +1,14 @@
 module.exports = {
-  title: 'Rehabjs',
+  title: 'RehabJS',
   tagline: 'Integration framework for any React based application that helps you write meaningful tests.',
   url: 'https://github.com/wix-incubator/rehabjs',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
-  organizationName: 'Wix', // Usually your GitHub org/user name.
-  projectName: 'Rehabjs', // Usually your repo name.
+  organizationName: 'Wix',
+  projectName: 'RehabJS',
   themeConfig: {
     navbar: {
-      title: '', //Rehabjs
+      title: 'RehabJS',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.png',
@@ -21,8 +21,8 @@ module.exports = {
           position: 'left',
         },
         {
-          to: 'blog', 
-          label: 'Blog', 
+          to: 'blog',
+          label: 'Blog',
           position: 'left'
         },
         {
