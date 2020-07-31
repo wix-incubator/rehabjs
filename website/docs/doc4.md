@@ -1,14 +1,32 @@
 ---
 id: doc4
-title: Doc for test
+title: Module Creation
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ac euismod odio, eu consequat dui. Nullam molestie consectetur risus id imperdiet. Proin sodales ornare turpis, non mollis massa ultricies id. Nam at nibh scelerisque, feugiat ante non, dapibus tortor. Vivamus volutpat diam quis tellus elementum bibendum. Praesent semper gravida velit quis aliquam. Etiam in cursus neque. Nam lectus ligula, malesuada et mauris a, bibendum faucibus mi. Phasellus ut interdum felis. Phasellus in odio pulvinar, porttitor urna eget, fringilla lectus. Aliquam sollicitudin est eros. Mauris consectetur quam vitae mauris interdum hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+## Modules
 
-Duis et egestas libero, imperdiet faucibus ipsum. Sed posuere eget urna vel feugiat. Vivamus a arcu sagittis, fermentum urna dapibus, congue lectus. Fusce vulputate porttitor nisl, ac cursus elit volutpat vitae. Nullam vitae ipsum egestas, convallis quam non, porta nibh. Morbi gravida erat nec neque bibendum, eu pellentesque velit posuere. Fusce aliquam erat eu massa eleifend tristique.
+First thing you need to do in your module, for example [react-native-navigation](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js) is to add mocks to all imports from the module which you want to test, you can do it using [jest mock](https://jestjs.io/docs/en/mock-functions) like it is done here [react-native-navigation](../../src/modules/react-native-navigation.js#L5).
 
-Sed consequat sollicitudin ipsum eget tempus. Integer a aliquet velit. In justo nibh, pellentesque non suscipit eget, gravida vel lacus. Donec odio ante, malesuada in massa quis, pharetra tristique ligula. Donec eros est, tristique eget finibus quis, semper non nisl. Vivamus et elit nec enim ornare placerat. Sed posuere odio a elit cursus sagittis.
+---
 
-Phasellus feugiat purus eu tortor ultrices finibus. Ut libero nibh, lobortis et libero nec, dapibus posuere eros. Sed sagittis euismod justo at consectetur. Nulla finibus libero placerat, cursus sapien at, eleifend ligula. Vivamus elit nisl, hendrerit ac nibh eu, ultrices tempus dui. Nam tellus neque, commodo non rhoncus eu, gravida in risus. Nullam id iaculis tortor.
+## Creating a mock class
 
-Nullam at odio in sem varius tempor sit amet vel lorem. Etiam eu hendrerit nisl. Fusce nibh mauris, vulputate sit amet ex vitae, congue rhoncus nisl. Sed eget tellus purus. Nullam tempus commodo erat ut tristique. Cras accumsan massa sit amet justo consequat eleifend. Integer scelerisque vitae tellus id consectetur.
+Then when you are creating a class, for example [React Native Navigation Module](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L13) you do need to initialize screen object in which you will record all the arguments with which mock implementations of your methods were called [screenObj](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L19). Then you will create a void implementation of your methods, but don't forget also to add a record to your screen object of parameters with which your methods were called [](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L28).
+
+---
+
+## Actions Generator
+
+Action generator give you few methods that extends your driver, for example for [React Native Navigation Module](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L64) you will have few additional methods [tap](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L66), [inspectScreen](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L69), [closeScreen](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L72).
+
+---
+
+## Collecting effects
+
+The collecting effects method will be called at the end of every test and will provide you an array of log items for your methods calls. At first you need to specify your own key for using in collectEffects methods [keyExample](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L15), then you will need to implement collectEffects method, and it can be implemented differently depending on a module that you are testing. Here we have an examples for [react-native-navigation](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L77), [fetch](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/fetch.js#L33).
+
+---
+
+## Clearing
+
+Please don't forget to clear your screen object at the end of the collect effects method.
