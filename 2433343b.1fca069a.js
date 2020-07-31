@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{62:function(a){a.exports=JSON.parse('{"allTagsPath":"/rehabjs/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/rehabjs/blog/tags/hello"}')}}]);

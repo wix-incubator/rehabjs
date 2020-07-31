@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[10],{66:function(a){a.exports=JSON.parse('{"allTagsPath":"/rehabjs/blog/tags","slug":"facebook","name":"facebook","count":1,"permalink":"/rehabjs/blog/tags/facebook"}')}}]);
