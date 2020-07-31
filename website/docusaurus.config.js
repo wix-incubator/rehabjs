@@ -11,20 +11,20 @@ module.exports = {
     navbar: {
       title: 'RehabJS',
       logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.png',
+        alt: 'RehabJS Logo',
+        src: 'img/logo-600x600.png',
       },
       items: [
         {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
-          position: 'left',
+          position: 'right',
         },
         {
-          to: 'blog',
-          label: 'Blog',
-          position: 'left'
+          href: 'https://discord.gg/rHVnJps',
+          label: 'Discord',
+          position: 'right'
         },
         {
           href: 'https://github.com/wix-incubator/rehabjs',
@@ -53,34 +53,30 @@ module.exports = {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
+              label: 'Discord Chat',
+              href: 'https://discord.gg/rHVnJps',
             },
             {
               label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
+              href: 'https://twitter.com/rehab_js',
             },
+            {
+              label: 'Github Issues',
+              href: 'https://github.com/wix-incubator/rehabjs/issues/new',
+            }
           ],
         },
         {
           title: 'More',
           items: [
             {
-              label: 'Blog',
-              to: 'blog',
-            },
-            {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/wix-incubator/rehabjs',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RehabJS team and Wix`,
     },
   },
   presets: [
