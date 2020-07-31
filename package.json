@@ -1,7 +1,7 @@
 {
   "name": "rehabjs",
   "version": "0.1.0",
-  "description": "Rehab js integration testing framework for React",
+  "description": "RehabJS integration testing framework for React and React Native",
   "main": "dist/index.js",
   "scripts": {
     "test": "cd examples/with-react-native && npm i && npm t",

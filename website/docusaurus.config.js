@@ -1,6 +1,6 @@
 module.exports = {
   title: 'RehabJS',
-  tagline: 'Integration framework for any React based application that helps you write meaningful tests.',
+  tagline: 'Integration testing framework for React and React Native',
   url: 'https://wix-incubator.github.io/rehabjs/',
   baseUrl: '/rehabjs/',
   onBrokenLinks: 'throw',
