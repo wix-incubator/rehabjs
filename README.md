@@ -3,8 +3,8 @@ RehabJs
 
 [![Build Status](https://travis-ci.com/wix-incubator/rehabjs.svg?token=ECstxpHzEZeQwCfcirJ4&branch=master)](https://travis-ci.com/wix-incubator/rehabjs)
 [![NPM Version](https://img.shields.io/npm/v/rehabjs.svg?style=flat)](https://www.npmjs.com/package/rehabjs)
-[![Discord Chat](https://img.shields.io/discord/735444524783894528?style=flat-square)](https://discord.com/channels/735444524783894528)
-[![Twitter](https://img.shields.io/twitter/follow/rehab_js?label=RehabJs%20Twitter&style=flat)](https://twitter.com/intent/follow?screen_name=rehab_js)
+[![Discord Chat](https://img.shields.io/discord/735444524783894528?style=flat)](https://discord.gg/rHVnJps)
+[![Twitter](https://img.shields.io/twitter/follow/rehab_js?color=174%20172%20174&style=flat)](https://twitter.com/intent/follow?screen_name=rehab_js)
 
 Integration testing framework for React and React Native applications that helps you write meaningful tests.
 
