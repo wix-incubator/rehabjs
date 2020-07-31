@@ -5,7 +5,7 @@ title: Module Creation
 
 ## Modules
 
-First thing you need to do in your module, for example [react-native-navigation](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js) is to add mocks to all imports from the module which you want to test, you can do it using [jest mock](https://jestjs.io/docs/en/mock-functions) like it is done here [react-native-navigation](../../src/modules/react-native-navigation.js#L5).
+First thing you need to do in your module, for example [react-native-navigation](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js) is to add mocks to all imports from the module which you want to test, you can do it using [jest mock](https://jestjs.io/docs/en/mock-functions) like it is done here [react-native-navigation](https://github.com/wix-incubator/rehabjs/blob/master/src/modules/react-native-navigation.js#L5).
 
 ---
 
