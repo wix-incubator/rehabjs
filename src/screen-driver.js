@@ -133,6 +133,6 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
 
 export function createTestDriver(defaults) {
   return ({componentGenerator = defaults.componentGenerator, passProps = {}, mockedData = {}, modules = defaults.modules, mocksSetup = defaults.mocksSetup} = {}) => {
-    return componentLocator(createScreenDriver(componentGenerator, passProps, modules, mockedData, mocksSetup));
+    return componentLocator(createScreenDriver(componentGenerator, passProps, modules, mockedData, mocksSetup), findComponents);
   };
 }
