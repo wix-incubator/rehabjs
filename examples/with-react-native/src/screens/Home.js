@@ -29,6 +29,15 @@ const Component = ({componentId}) => {
     });
   }, [componentId]);
 
+  const onPushColorsPress = useCallback(() => {
+    Navigation.push(componentId, {
+      component: {
+        name: screens.COLORS.id,
+        passProps: {},
+      },
+    });
+  }, [componentId]);
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -43,6 +52,11 @@ const Component = ({componentId}) => {
               onPress={onPushScreenPress}
               title="Push screen"
             />
+            <Button
+              testID="pushColors"
+              onPress={onPushColorsPress}
+              title="Colors screen"
+            />
           </Text>
         </View>
         <View style={styles.sectionContainer}>
@@ -51,7 +65,7 @@ const Component = ({componentId}) => {
             {user ? (
               <>
                 <Image style={styles.avatar} source={{uri: user.avatar}} />
-                <Text>user.email}</Text>
+                <Text>{user.email}</Text>
               </>
             ) : null}
           </Text>

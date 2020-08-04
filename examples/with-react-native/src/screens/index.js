@@ -1,12 +1,14 @@
-import Home from './Home';
-import Hello from './Hello';
-
 export const HOME = {
   id: 'com.myApp.home',
-  generator: () => Home,
+  generator: () => require('./Home').default,
 };
 
 export const HELLO = {
   id: 'com.myApp.hello',
-  generator: () => Hello,
+  generator: () => require('./Hello').default,
+};
+
+export const COLORS = {
+  id: 'com.myApp.colors',
+  generator: () => require('./Colors').default,
 };
