@@ -23,7 +23,6 @@ export function matchByLastSegmentOfUniqueId(driver, suffix) {
 const getOptions = (sheet) => sheet.props.options;
 const flatten = (flat, item) => flat.concat(item);
 const Enter = {
-  Input10: (text, input) => input.props.onChange({nativeEvent: {text}}),
   TextInput: (text, input) => {
     if (input.props.onChange) {
       input.props.onChange({nativeEvent: {text}});
@@ -31,9 +30,6 @@ const Enter = {
     if (input.props.onChangeText) {
       input.props.onChangeText(text);
     }
-  },
-  AutoGrowingTextInput: (text, input) => {
-    input.props.onChangeText(text);
   },
 };
 
