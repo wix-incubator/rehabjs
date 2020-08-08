@@ -118,14 +118,10 @@ export function componentLocator(driver, findComponents) {
   };
   const methods = {
     find: ({components}) => (selector = 0) => final(select(components, selector)),
-    press: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPress'})),
     click: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onClick'})),
     play: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})),
-    longPress: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onLongPress'})),
     enter: ({components, testID}) => (text) => fluent(assertFound(components, testID), enterInputText(components[0], text)),
     enterRC: ({components, testID}) => (isEmpty) => fluent(assertFound(components, testID), enterRCContent(components[0], isEmpty)),
     focus: ({components, testID}) => () => fluent(assertFound(components, testID), focus(components[0])),
