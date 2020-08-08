@@ -156,8 +156,4 @@ export function componentLocator(driver, findComponents) {
   return provider;
 }
 
-export function findable(ids) {
-  return Object.values(ids).filter((value) => typeof value === 'string');
-}
-
 export const findComponents = matchByLastSegmentOfUniqueId;
