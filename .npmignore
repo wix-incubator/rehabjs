@@ -1,3 +1,6 @@
-examples/
-src/
-website/
+.idea
+/coverage
+/examples
+/src
+/website
+/scripts/release.js

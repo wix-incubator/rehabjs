@@ -23,7 +23,6 @@ export function matchByLastSegmentOfUniqueId(driver, suffix) {
 const getOptions = (sheet) => sheet.props.options;
 const flatten = (flat, item) => flat.concat(item);
 const Enter = {
-  Input10: (text, input) => input.props.onChange({nativeEvent: {text}}),
   TextInput: (text, input) => {
     if (input.props.onChange) {
       input.props.onChange({nativeEvent: {text}});
@@ -31,9 +30,6 @@ const Enter = {
     if (input.props.onChangeText) {
       input.props.onChangeText(text);
     }
-  },
-  AutoGrowingTextInput: (text, input) => {
-    input.props.onChangeText(text);
   },
 };
 
@@ -117,7 +113,6 @@ export function componentLocator(driver, findComponents) {
     }
   };
   const methods = {
-    find: ({components}) => (selector = 0) => final(select(components, selector)),
     click: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onClick'})),
     play: ({components, testID}) => (selector = 0) =>
@@ -150,10 +145,6 @@ export function componentLocator(driver, findComponents) {
     },
   });
   return provider;
-}
-
-export function findable(ids) {
-  return Object.values(ids).filter((value) => typeof value === 'string');
 }
 
 export const findComponents = matchByLastSegmentOfUniqueId;
