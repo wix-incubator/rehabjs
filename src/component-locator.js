@@ -117,7 +117,6 @@ export function componentLocator(driver, findComponents) {
     }
   };
   const methods = {
-    find: ({components}) => (selector = 0) => final(select(components, selector)),
     press: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPress'})),
     click: ({components, testID}) => (selector = 0) =>
