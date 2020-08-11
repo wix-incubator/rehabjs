@@ -1,12 +1,10 @@
 const rehabPath = './node_modules/rehabjs/dist';
 
 module.exports = {
-  preset: "react-native",
+  preset: 'react-native',
   transformIgnorePatterns: [],
   collectCoverage: true,
   collectCoverageFrom: [rehabPath],
   coverageDirectory: '../../coverage/with-react-native',
-  coverageReporters: [
-    ["lcov", { projectRoot: rehabPath }],
-  ],
+  coverageReporters: [['lcov', {projectRoot: rehabPath}]],
 };

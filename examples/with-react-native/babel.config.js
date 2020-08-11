@@ -3,13 +3,13 @@ module.exports = {
   env: {
     test: {
       plugins: [
-        ['istanbul', {
-          exclude: [
-            '**',
-            '!**/node_modules/rehabjs/dist/**',
-          ]
-        }]
-      ]
-    }
-  }
+        [
+          'istanbul',
+          {
+            exclude: ['**', '!**/node_modules/rehabjs/dist/**'],
+          },
+        ],
+      ],
+    },
+  },
 };
