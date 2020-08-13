@@ -1,52 +1,27 @@
 import 'react-native';
-import React from 'react';
-import {createTestDriver, modules} from 'rehabjs';
+import {createTestDriver} from 'rehabjs';
 import RNNModule from 'rehabjs/modules/react-native-navigation';
-import FetchModule from 'rehabjs/modules/fetch';
 import * as screens from '../index';
 
-const rnnModule = new RNNModule();
-const fetchModule = new FetchModule({
-  getFetchResult: (url, options) => ({data: {email: 'mock@test.com'}}),
-});
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./index').default,
-  modules: [rnnModule, fetchModule],
+  modules: [new RNNModule()],
 });
 
 describe('Home', () => {
-  it('renders', async () => {
+  it('pushes Navigation screen', async () => {
     const driver = screenDriver({passProps: {componentId: 'test'}});
 
-    const scenario = driver.run();
-
-    expect(await scenario.execute()).toEqual({
-      '[navigation]': [],
-      '[fetch]': [
-        {
-          body: undefined,
-          url: 'https://reqres.in/api/users/2',
-        },
-      ],
-    });
-  });
-
-  it('pushes Hello screen', async () => {
-    const driver = screenDriver({passProps: {componentId: 'test'}});
-
-    const scenario = driver.begin().click('pushScreen').end();
+    const scenario = driver.begin().click('link_Navigation').end();
 
     expect(await scenario.execute()).toEqual({
       '[navigation]': [
         {
-          name: screens.HELLO.id,
+          name: screens.NAVIGATION.id,
           operation: 'push',
-        },
-      ],
-      '[fetch]': [
-        {
-          body: undefined,
-          url: 'https://reqres.in/api/users/2',
+          passProps: expect.objectContaining({
+            title: 'Navigation',
+          }),
         },
       ],
     });

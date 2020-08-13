@@ -1,70 +1,64 @@
-import React from 'react';
-import {StyleSheet, ScrollView, View, Text, Button, Image} from 'react-native';
+import React, {useCallback, useMemo} from 'react';
+import {FlatList, StyleSheet} from 'react-native';
+import Header from '../../components/Header';
+import {useNavigation} from '../../hooks/navigation';
+import HeaderSeparator from './HeaderSeparator';
+import MenuItem from './MenuItem';
+import * as screens from '../index';
 
-import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
+function ListHeader() {
+  return (
+    <Header>
+      <Header.Title>RehabJS</Header.Title>
+      <Header.Subtitle style={styles.subtitle}>DEMO APP</Header.Subtitle>
+      <HeaderSeparator />
+    </Header>
+  );
+}
 
-import {useHooks} from './useHooks';
+const stickyZero = [0];
 
 export const Component = ({componentId}) => {
-  const {onPushScreenPress, user} = useHooks({componentId});
+  const renderItem = useCallback(({item}) => MenuItem(item), []);
+  const {pushScreen} = useNavigation({componentId});
+  const items = useMemo(
+    () =>
+      Object.entries(screens)
+        .filter(([_key, value]) => value.title)
+        .map(([key, props], index) => ({
+          index,
+          id: key,
+          title: props.title,
+          description: props.description,
+          onPress: () => pushScreen(key, props),
+        })),
+    [pushScreen],
+  );
+
   return (
-    <ScrollView
+    <FlatList
+      contentContainerStyle={styles.listContainer}
       contentInsetAdjustmentBehavior="automatic"
-      style={styles.scrollView}>
-      <Header />
-      <View style={styles.body}>
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Navigation example</Text>
-          <Text style={styles.sectionDescription}>
-            <Button
-              testID="pushScreen"
-              onPress={onPushScreenPress}
-              title="Push screen"
-            />
-          </Text>
-        </View>
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>User info fetched from server</Text>
-          <Text style={styles.sectionDescription}>
-            {user ? (
-              <>
-                <Image style={styles.avatar} source={{uri: user.avatar}} />
-                <Text>user.email}</Text>
-              </>
-            ) : null}
-          </Text>
-        </View>
-      </View>
-    </ScrollView>
+      data={items}
+      renderItem={renderItem}
+      keyExtractor={MenuItem.getId}
+      ListHeaderComponent={ListHeader}
+      ItemSeparatorComponent={MenuItem.Separator}
+      stickyHeaderIndices={stickyZero}
+    />
   );
 };
 
+Component.options = {
+  topBar: {
+    visible: false,
+    drawBehind: true,
+  },
+};
+
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  body: {
-    backgroundColor: Colors.white,
-    paddingBottom: 32,
-  },
-  avatar: {
-    borderRadius: 30,
-    width: 60,
-    height: 60,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
+  listContainer: {},
+  subtitle: {
+    paddingTop: 0,
   },
 });
