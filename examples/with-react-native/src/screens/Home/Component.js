@@ -57,7 +57,9 @@ Component.options = {
 };
 
 const styles = StyleSheet.create({
-  listContainer: {},
+  listContainer: {
+    paddingBottom: 66,
+  },
   subtitle: {
     paddingTop: 0,
   },
