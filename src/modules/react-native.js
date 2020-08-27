@@ -12,44 +12,6 @@ jest.mock('react-native', () => {
 
 const uilibLog = [];
 
-const Analyzers = {
-  '|views|': (found) => found.length,
-  '(text)': (found) => found.map(collectText).map(asDelimitedText).join(' '),
-  '(images)': (found) => nullify(found.map(_.get(['props', 'source', 'uri'])).join('|')),
-  '(inspect:selectionState)': (found) => found.map((e) => (e.props.selected === true ? 'selected' : 'unselected')),
-};
-
-function analyseViewHierarchy(driver, inspections, stage) {
-  let hasFailed = false;
-  const result = Object.entries(Analyzers).map(([name, digest]) => {
-    const targets = inspections[name];
-    if (!targets) {
-      return {};
-    }
-    const result = runAnalysis(driver, digest, targets);
-    const stageResultComparer = (target, result) => {
-      if (typeof result !== 'object') {
-        const expected = Array.isArray(target) ? target[stage * 2] : target;
-        return _.isEqual(expected, result);
-      }
-    };
-    hasFailed = hasFailed || !_.isEqualWith(stageResultComparer, targets, result);
-    return {[name]: result};
-  });
-  if (hasFailed) {
-    printComponentTree(driver, stage);
-  }
-  return result;
-}
-
-function runAnalysis(driver, digest, targets) {
-  const result = {};
-  Object.keys(targets).forEach((suffix) => {
-    result[suffix] = digest(filterByLastSegement(driver, suffix));
-  });
-  return result;
-}
-
 export default class ReactNativeModule {
   effectsKey = '[react-native]';
 
