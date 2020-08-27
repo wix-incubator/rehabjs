@@ -64,10 +64,6 @@ const enterInputText = (input, text) => {
   const handler = Enter[input.type];
   handler(text, input);
 };
-const enterRCContent = (input, content) => {
-  const handler = (content) => input.props.onTestContentChange(content);
-  handler(content, input);
-};
 
 const focus = (component) => component.props.onFocus();
 const pressAction = (action) => action.onPress();
@@ -118,7 +114,6 @@ export function componentLocator(driver, findComponents) {
     play: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})),
     enter: ({components, testID}) => (text) => fluent(assertFound(components, testID), enterInputText(components[0], text)),
-    enterRC: ({components, testID}) => (isEmpty) => fluent(assertFound(components, testID), enterRCContent(components[0], isEmpty)),
     focus: ({components, testID}) => () => fluent(assertFound(components, testID), focus(components[0])),
     scroll: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), scrollEvent(selector))),
