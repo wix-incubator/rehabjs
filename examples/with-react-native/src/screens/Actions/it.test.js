@@ -28,10 +28,10 @@ describe('Actions', () => {
     });
   });
 
-  test('.click(<non-existent testID>)', async () => {
+  test.only('.click(<non-existent testID>)', async () => {
     const scenario = driver.begin().click('nonExistent').end();
 
-    await expect(scenario.execute()).rejects.toThrow();
+    expect(await scenario.execute()).toEqual({})
   });
 
   test('.enter(<input testID>, "Done")', async () => {

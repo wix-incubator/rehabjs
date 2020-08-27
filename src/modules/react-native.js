@@ -91,9 +91,6 @@ export default class ReactNativeModule {
     return {
       confirmAlert: () => {
         Alert.alert.mock.calls[0][2][1].onPress();
-<<<<<<< HEAD
-        return this;
-=======
       },
       find: ({findComponent}) => (selector = 0) => {
         return findComponent(selector);
@@ -137,7 +134,6 @@ export default class ReactNativeModule {
       choose: ({findActionSheetItem}) => (selector) => {
         const action = findActionSheetItem(selector);
         action.onPress();
->>>>>>> Move actions to modules
       },
     };
   };

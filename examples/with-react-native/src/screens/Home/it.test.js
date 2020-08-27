@@ -1,11 +1,12 @@
 import 'react-native';
 import {createTestDriver} from 'rehabjs';
 import RNNModule from 'rehabjs/modules/react-native-navigation';
+import ReactNativeModule from 'rehabjs/modules/react-native';
 import * as screens from '../index';
 
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./index').default,
-  modules: [new RNNModule()],
+  modules: [new RNNModule(), new ReactNativeModule()],
 });
 
 describe('Home', () => {

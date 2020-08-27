@@ -1,6 +1,7 @@
 import 'react-native';
 import {createTestDriver} from 'rehabjs';
 import FetchModule from 'rehabjs/modules/fetch';
+import ReactNativeModule from 'rehabjs/modules/react-native';
 
 const TODOS = [1, 2].map((id) => ({
   userId: 1,
@@ -25,10 +26,11 @@ const fetchModule = new FetchModule({
     }
   },
 });
+const RNModule = new ReactNativeModule();
 
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./index').default,
-  modules: [fetchModule],
+  modules: [fetchModule, RNModule],
 });
 
 describe('TodoList', () => {
