@@ -111,8 +111,6 @@ export function componentLocator(driver, findComponents) {
   const methods = {
     click: ({components, testID}) => (selector = 0) =>
       fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onClick'})),
-    play: ({components, testID}) => (selector = 0) =>
-      fluent(assertFound(components, testID), simulateComponentEvent(select(components, selector), {event: 'onPlayPress'})),
     enter: ({components, testID}) => (text) => fluent(assertFound(components, testID), enterInputText(components[0], text)),
     focus: ({components, testID}) => () => fluent(assertFound(components, testID), focus(components[0])),
     scroll: ({components, testID}) => (selector = 0) =>
