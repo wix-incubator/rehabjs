@@ -1,5 +1,5 @@
 import {Navigation} from 'react-native-navigation';
-import {combine, asArray} from '../utils/helpers';
+import RehabModule from './rehab-module'
 import './react-native';
 
 jest.mock('react-native-navigation');
@@ -10,49 +10,62 @@ function append(container, prop, value) {
   target.push(value);
 }
 
-export default class ReactNativeNavigationModule {
+export default class ReactNativeNavigationModule extends RehabModule {
   effectsKey = '[navigation]';
   screen = {};
 
+  constructor() {
+    super('[navigation]','[navigation]')
+  }
+
+
   beforeEach = () => {
-    const screen = this.screen;
     Navigation.showModal.mockImplementation(async (layout) => {
-      screen.name = layout.stack.children[0].component.name;
-      screen.passProps = layout.stack.children[0].component.passProps;
-      screen.layout = layout;
-      screen.operation = 'showModal';
+      const screen = {
+        name: layout.stack.children[0].component.name,
+        passProps: layout.stack.children[0].component.passProps,
+        operation: 'showModal'
+      }
+      this.addResult(screen)
     });
     Navigation.push.mockImplementation(async (componentId, layout) => {
-      screen.name = layout.component.name;
-      screen.passProps = layout.component.passProps;
-      screen.layout = layout;
-      screen.operation = 'push';
+      const screen = {
+        name: layout.component.name,
+        passProps: layout.component.passProps,
+        operation: 'push'
+      };
+      this.addResult(screen)
     });
     Navigation.pop.mockImplementation(async (componentId) => {
-      screen.name = `caller:${componentId}`;
-      screen.passProps = undefined;
-      screen.layout = undefined;
-      screen.operation = 'pop';
+      const screen = {
+        name: `caller:${componentId}`,
+        operation: 'pop'
+      };
+      this.addResult(screen)
     });
     Navigation.popToRoot.mockImplementation(async (componentId) => {
-      screen.name = `caller:${componentId}`;
-      screen.passProps = undefined;
-      screen.layout = undefined;
-      screen.operation = 'popToRoot';
+      const screen = {
+        name: `caller:${componentId}`,
+        operation: 'popToRoot'
+      };
+      this.addResult(screen)
     });
     Navigation.dismissModal.mockImplementation(async (componentId) => {
-      screen.name = `caller:${componentId}`;
-      screen.passProps = undefined;
-      screen.layout = undefined;
-      screen.operation = 'dismissModal';
+      const screen = {
+        name: `caller:${componentId}`,
+        operation: 'dismissModal'
+      };
+      this.addResult(screen)
     });
     Navigation.showOverlay.mockImplementation(async (layout) => {
-      const {name, passProps} = layout.component;
-      append(screen, 'overlays', {name, passProps});
+      const screen = {
+        name: layout.component.name,
+        passProps: layout.component.passProps,
+        operation: 'overlays'
+      };
+      this.addResult(screen)
     });
   };
-
-  afterEach = () => {};
 
   getScreenInfo = (attributes = ['name', 'passProps']) => {
     return attributes.reduce((res, key) => Object.assign(res, {[key]: this.screen[key]}), {});
@@ -71,10 +84,4 @@ export default class ReactNativeNavigationModule {
     },
   });
 
-  collectEffects = () => {
-    // TODO: report all screen changes, not just the last one
-    return {
-      [this.effectsKey]: asArray(['name', 'passProps', 'overlays', 'operation'].reduce((res, key) => combine(res, {[key]: this.screen[key]}), {})),
-    };
-  };
 }

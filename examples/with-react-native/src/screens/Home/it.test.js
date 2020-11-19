@@ -13,15 +13,17 @@ describe('Home', () => {
   it('pushes Navigation screen', async () => {
     const driver = screenDriver({passProps: {componentId: 'test'}});
 
-    const scenario = driver.begin().click('link_Navigation').end();
+    const scenario = driver.begin().tap().click('link_Navigation').end();
 
-    expect(await scenario.execute()).toEqual({
+    await scenario.validate({
       '[navigation]': [
         {
           name: screens.NAVIGATION.id,
           operation: 'push',
           passProps: expect.objectContaining({
             title: 'Navigation',
+            description: 'Test cases for React Native Navigation',
+            id: screens.NAVIGATION.id
           }),
         },
       ],

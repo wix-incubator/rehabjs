@@ -2,7 +2,7 @@ import React from 'react';
 import {act} from '@testing-library/react-hooks';
 import _ from 'lodash';
 import {componentDriver} from 'react-component-driver';
-import {componentLocator, findComponents, filterByLastSegement} from './component-locator';
+import {findComponents} from './component-locator';
 import {combine, printable, appendEffects} from './utils/helpers';
 import createDriver from './driver';
 
@@ -37,7 +37,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
   jest.useFakeTimers();
   const moduleDriver = createDriver();
   if (mocksSetup) mocksSetup.forEach((setup) => setup());
-  moduleDriver.registerModules(modules, props);
+  moduleDriver.registerModules(modules, props, mockedData);
   moduleDriver.setup();
 
   class TestScreen extends React.Component {
@@ -71,7 +71,7 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
       const end = () => {
         expect.hasAssertions();
         return {
-          execute: inAct((inspections) => buildResult(inspections, operations)),
+          validate: inAct((expectedResults) => buildResult(expectedResults, operations)),
         };
       };
       const recorder = new Proxy(
@@ -98,20 +98,18 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     ...moduleDriver.registerMethods((func, args) => func(getPublicLocatorApi(driver))(args))
   });
 
-  async function buildResult(inspections, operations) {
-    let stage = 0;
+  async function buildResult(expectedResults, operations) {
     const result = {};
-    const locator = componentLocator(driver, findComponents);
     const firstStep = {name: 'getComponent', args: []};
     const lastStep = {name: 'split', args: ['/']};
 
     for (const {name, args} of [firstStep, ...operations, lastStep]) {
-      const action = locator[name];
+      const action = driver[name];
       if (name === 'split') {
         if (args[0] !== '/') {
           throw new Error(`split() must be called with argument '/'`);
         }
-        appendEffects(result, collectEffects(driver, inspections, stage), stage);
+        appendEffects(result, collectEffects(driver, expectedResults));
         continue;
       }
       if (action === undefined) {
@@ -123,27 +121,12 @@ function createScreenDriver(componentGenerator, props, modules, mockedData, mock
     }
 
     driver.unmount();
-    return result;
+    moduleDriver.validateResult(expectedResults)
+    moduleDriver.tearDown();
   }
 
-  function collectModuleEffects() {
-    // const effects = driverModules.reduce((result, value) => {
-    //  return {...result, ...value.collectEffects()}
-    // }, {});
-    // return effects;
-    return moduleDriver.collectLogs();
-  }
-
-  function collectEffects() {
-    return combine(collectModuleEffects());
-  }
-
-  function runAnalysis(driver, digest, targets) {
-    const result = {};
-    Object.keys(targets).forEach((suffix) => {
-      result[suffix] = digest(filterByLastSegement(driver, suffix));
-    });
-    return result;
+  function collectEffects(driver, expectedResults) {
+    return combine(moduleDriver.collectLogs(driver, expectedResults));
   }
 
   driver.setProps({...props});
@@ -155,10 +138,10 @@ export function createTestDriver(defaults) {
   return ({
     componentGenerator = defaults.componentGenerator,
     passProps = {},
-    mockedData = {},
+    mockedData = defaults.mockedData ? defaults.mockedData : {},
     modules = defaults.modules,
     mocksSetup = defaults.mocksSetup,
   } = {}) => {
-    return componentLocator(createScreenDriver(componentGenerator, passProps, modules, mockedData, mocksSetup));
+    return createScreenDriver(componentGenerator, passProps, modules, mockedData, mocksSetup);
   };
 }

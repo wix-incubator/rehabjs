@@ -1,3 +1,5 @@
+import {filterByLastSegement} from '../utils/helpers';
+import RehabModule from './rehab-module';
 import {Alert} from 'react-native';
 
 jest.mock('react-native', () => {
@@ -10,7 +12,25 @@ jest.mock('react-native', () => {
   return RN;
 });
 
-const uilibLog = [];
+export function printComponentTree(driver, stage) {
+  const componentLines = driver.filterBy(({props = {}} = {}) => props.testID).map((e) => `${e.type.padEnd(16)} : "${e.props.testID}"`);
+  const stageInfo = stage !== undefined ? ` at stage ${stage}` : '';
+  // eslint-disable-next-line no-console
+  console.log(`Components with testIDs${stageInfo}\n${componentLines.join('\n')}`);
+}
+
+const enterInputText = (input, text) => {
+  const handler = Enter[input.type];
+  handler(text, input);
+};
+
+const enterRCContent = (input, content) => {
+  const handler = (content) => input.props.onTestContentChange(content);
+  handler(content, input);
+};
+
+const focus = (component) => component.props.onFocus();
+
 
 const Analyzers = {
   '|views|': (found) => found.length,
@@ -78,8 +98,12 @@ const layoutEvent = ({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} =
   };
 };
 
-export default class ReactNativeModule {
+export default class ReactNativeModule extends RehabModule {
   effectsKey = '[react-native]';
+
+  constructor() {
+    super('[react-native]', '[react-native]')
+  }
 
   beforeEach = () => {
     Alert.alert = jest.fn();
@@ -136,9 +160,5 @@ export default class ReactNativeModule {
         action.onPress();
       },
     };
-  };
-
-  collectEffects = () => {
-    return uilibLog.length > 0 ? {[this.effectsKey]: [...uilibLog]} : {};
   };
 }

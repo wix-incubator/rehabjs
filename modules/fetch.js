@@ -1,1 +1,1 @@
-module.exports = require('../dist/modules/fetch');
+module.exports = require('../src/modules/fetch');

@@ -5,21 +5,25 @@ class Driver {
   actions = [];
   mockedData = {};
 
-  //TODO we need to come up with some module API validation
   registerModules = (modules, props, mockedData) => {
     this.modules = [...modules];
-    this.mockedData = {...mockedData};
+    if (mockedData) {
+      this.modules.forEach((module) => module.setupMockedData(mockedData[module.getMockKey()]))
+    }
     this.actions = this.modules.map((value) => value.actionsGenerator(props));
   };
 
   setup = () => {
-    // setupRehab();
     this.modules.forEach((module) => module.beforeEach(this.mockedData));
   };
 
-  collectLogs = () => {
-    const effects = this.modules.reduce((result, value) => {
-      return {...result, ...value.collectEffects()};
+  tearDown = () => {
+    this.modules.forEach((module) => module.afterEach());
+  }
+
+  collectLogs = (driver, expectedResults) => {
+    const effects = this.modules.reduce((result, module) => {
+      return {...result, ...module.collectEffects(driver, expectedResults[module.getResultsKey()])};
     }, {});
     return effects;
   };
@@ -34,6 +38,12 @@ class Driver {
       }, {})
     }
   );
+
+  validateResult = (results) => {
+    this.modules.forEach((module) => {
+      module.validateResults(results[module.getResultsKey()])
+    });
+  } 
 
 }
 
