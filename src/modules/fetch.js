@@ -1,41 +1,26 @@
 import {mockGlobal} from '../utils/mockGlobal';
+import RehabModule from './rehab-module';
 
 mockGlobal('fetch', jest.fn());
 
-export default class FetchModule {
-  constructor({getFetchResult = (input, init) => undefined} = {}) {
-    this.getFetchResult = getFetchResult;
+export default class FetchModule extends RehabModule {
+  constructor() {
+    super('[fetch]', '[fetch]');
   }
 
-  effectsKey = '[fetch]';
-
-  networkLog = [];
-
   beforeEach = () => {
-    this.networkLog = [];
 
     global.fetch.mockImplementation(async (input, init = {}) => {
-      this.networkLog.push({
+      this.addResult({
         url: input,
         ...init,
         body: init.body ? JSON.parse(init.body) : undefined,
       });
 
-      const result = this.getFetchResult(input, init);
+      const result = this.getMocks()[input];
+      if (!result) throw new Error(`${input} was not properly mocked`);
       return {ok: true, json: () => Promise.resolve(result)};
     });
   };
 
-  afterEach = () => {};
-
-  collectEffects = () => {
-    if (this.networkLog.length > 0) {
-      return {[this.effectsKey]: [...this.networkLog]};
-    }
-    return {};
-  };
-
-  actionsGenerator = () => {
-    return {};
-  };
 }

@@ -36,7 +36,7 @@ export function appendItems(array, items, previousMerges) {
   array.push(...marker, ...items);
 }
 
-export function appendEffects(recording, input, previousMerges) {
+export function appendEffects(recording, input, previousMerges = 0) {
   return mergeEffects(recording, input, previousMerges, getOrInstall);
 }
 

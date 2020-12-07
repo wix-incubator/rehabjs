@@ -1,6 +1,7 @@
 import 'react-native';
 import {createTestDriver} from 'rehabjs';
 import FetchModule from 'rehabjs/modules/fetch';
+import ReactNativeModule from 'rehabjs/modules/react-native';
 
 const TODOS = [1, 2].map((id) => ({
   userId: 1,
@@ -9,35 +10,26 @@ const TODOS = [1, 2].map((id) => ({
   completed: id % 2 === 0,
 }));
 
-const fetchModule = new FetchModule({
-  getFetchResult: (url, options) => {
-    if (url.endsWith('/todos')) {
-      return TODOS.slice();
-    }
-
-    // TODO: do some normal pattern matching
-    if (url.endsWith('/todos/1')) {
-      return {...TODOS[0]};
-    }
-
-    if (url.endsWith('/todos/2')) {
-      return {...TODOS[1]};
-    }
-  },
-});
+const fetchModule = new FetchModule();
+const RNModule = new ReactNativeModule();
 
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./index').default,
-  modules: [fetchModule],
+  modules: [fetchModule, RNModule],
+  mockedData: {
+    [fetchModule.getMockKey()]: {
+      'https://jsonplaceholder.typicode.com/todos': TODOS.slice(),
+      'https://jsonplaceholder.typicode.com/todos/1':  {...TODOS[0]},
+      'https://jsonplaceholder.typicode.com/todos/2': {...TODOS[1]},
+    }
+  }
 });
 
 describe('TodoList', () => {
   it('fetches', async () => {
     const driver = screenDriver({passProps: {componentId: 'test'}});
 
-    const effects = await driver.run().execute();
-
-    expect(effects).toEqual({
+    await driver.run().validate({
       '[fetch]': [
         {
           body: undefined,

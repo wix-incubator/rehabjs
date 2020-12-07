@@ -1,18 +1,17 @@
 {
   "name": "rehabjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "RehabJS integration testing framework for React and React Native",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "cd examples/with-react-native && npm i && npm t",
     "prettier": "prettier --write ./src/*",
-    "build": "babel src --out-dir dist",
+    "build": "npm build ./",
     "release": "node scripts/release"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.10.2",
     "@testing-library/react-hooks": "^3.3.0",
     "jest-diff": "^26.0.0",
     "react-component-driver": "^0.10.0",
@@ -26,11 +25,6 @@
     "react": "^16.13.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-transform-runtime": "^7.11.0",
-    "@babel/preset-env": "^7.10.4",
     "prettier": "2.0.5",
     "semver": "^7.3.2",
     "shell-utils": "^1.0.10"

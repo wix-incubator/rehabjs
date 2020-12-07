@@ -1,1 +1,1 @@
-module.exports = require('../dist/modules/react-native-navigation');
+module.exports = require('../src/modules/react-native-navigation');

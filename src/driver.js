@@ -5,34 +5,46 @@ class Driver {
   actions = [];
   mockedData = {};
 
-  //TODO we need to come up with some module API validation
   registerModules = (modules, props, mockedData) => {
     this.modules = [...modules];
-    this.mockedData = {...mockedData};
+    if (mockedData) {
+      this.modules.forEach((module) => module.setupMockedData(mockedData[module.getMockKey()]))
+    }
     this.actions = this.modules.map((value) => value.actionsGenerator(props));
   };
 
   setup = () => {
-    // setupRehab();
     this.modules.forEach((module) => module.beforeEach(this.mockedData));
   };
 
-  collectLogs = () => {
-    const effects = this.modules.reduce((result, value) => {
-      return {...result, ...value.collectEffects()};
+  tearDown = () => {
+    this.modules.forEach((module) => module.afterEach());
+  }
+
+  collectLogs = (driver, expectedResults) => {
+    const effects = this.modules.reduce((result, module) => {
+      return {...result, ...module.collectEffects(driver, expectedResults[module.getResultsKey()])};
     }, {});
     return effects;
   };
 
-  registerMethods = (currentObject) => ({
-    ...this.actions.reduce(function (result, action) {
-      const wrappedActions = _.mapValues(action, (func) => async (args) => {
-        func(args);
-        return currentObject;
-      });
-      return {...result, ...wrappedActions};
-    }, {}),
-  });
+  registerMethods = (bindApi) => (
+    {
+      ...this.actions.reduce((result, action) => {
+        const wrappedActions = _.mapValues(action, (func, name) => async (args) => {
+          return bindApi(func, args);
+        })
+        return {...result, ...wrappedActions};
+      }, {})
+    }
+  );
+
+  validateResult = (results) => {
+    this.modules.forEach((module) => {
+      module.validateResults(results[module.getResultsKey()])
+    });
+  } 
+
 }
 
 export default function createDriver() {
