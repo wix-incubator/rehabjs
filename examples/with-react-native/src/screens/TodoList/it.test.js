@@ -1,7 +1,7 @@
 import 'react-native';
 import {createTestDriver} from 'rehabjs';
-import FetchModule from 'rehabjs/modules/fetch';
-import ReactNativeModule from 'rehabjs/modules/react-native';
+import {FetchModule} from 'rehabjs';
+import {ReactNativeModule} from 'rehabjs';
 
 const TODOS = [1, 2].map((id) => ({
   userId: 1,
@@ -19,10 +19,10 @@ const screenDriver = createTestDriver({
   mockedData: {
     [fetchModule.getMockKey()]: {
       'https://jsonplaceholder.typicode.com/todos': TODOS.slice(),
-      'https://jsonplaceholder.typicode.com/todos/1':  {...TODOS[0]},
+      'https://jsonplaceholder.typicode.com/todos/1': {...TODOS[0]},
       'https://jsonplaceholder.typicode.com/todos/2': {...TODOS[1]},
-    }
-  }
+    },
+  },
 });
 
 describe('TodoList', () => {
@@ -30,7 +30,7 @@ describe('TodoList', () => {
     const driver = screenDriver({passProps: {componentId: 'test'}});
 
     await driver.run().validate({
-      '[fetch]': [
+      [fetchModule.getResultsKey()]: [
         {
           body: undefined,
           url: 'https://jsonplaceholder.typicode.com/todos',

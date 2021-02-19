@@ -7,4 +7,5 @@ module.exports = {
   collectCoverageFrom: [rehabPath],
   coverageDirectory: '../../coverage/with-react-native',
   coverageReporters: [['lcov', {projectRoot: rehabPath}]],
+  modulePaths: ['node_modules'],
 };

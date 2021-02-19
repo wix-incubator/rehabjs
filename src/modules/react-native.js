@@ -98,7 +98,7 @@ const layoutEvent = ({x = 0, y = 0, width = 375, height, pageX = x, pageY = y} =
   };
 };
 
-export default class ReactNativeModule extends RehabModule {
+export class ReactNativeModule extends RehabModule {
   effectsKey = '[react-native]';
 
   constructor() {

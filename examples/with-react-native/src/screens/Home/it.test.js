@@ -1,12 +1,12 @@
 import 'react-native';
 import {createTestDriver} from 'rehabjs';
-import RNNModule from 'rehabjs/modules/react-native-navigation';
-import ReactNativeModule from 'rehabjs/modules/react-native';
+import {ReactNativeNavigationModule} from 'rehabjs';
+import {ReactNativeModule} from 'rehabjs';
 import * as screens from '../index';
 
 const screenDriver = createTestDriver({
   componentGenerator: () => require('./index').default,
-  modules: [new RNNModule(), new ReactNativeModule()],
+  modules: [new ReactNativeNavigationModule(), new ReactNativeModule()],
 });
 
 describe('Home', () => {
@@ -23,7 +23,7 @@ describe('Home', () => {
           passProps: expect.objectContaining({
             title: 'Navigation',
             description: 'Test cases for React Native Navigation',
-            id: screens.NAVIGATION.id
+            id: screens.NAVIGATION.id,
           }),
         },
       ],
