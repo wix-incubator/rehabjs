@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "preinstall": "cd ../.. && npm run build && mv $(npm pack) examples/with-react-native/rehabjs.tgz",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
@@ -16,10 +15,11 @@
     "react-native-navigation": "^6.9.1"
   },
   "devDependencies": {
+    "@react-native-community/eslint-config": "^2.0.0",
     "eslint": "^6.5.1",
     "jest": "^26.0.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "16.13.1",
-    "rehabjs": "file:./rehabjs.tgz"
+    "rehabjs": "file:../.."
   }
 }

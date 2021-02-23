@@ -10,7 +10,7 @@ function append(container, prop, value) {
   target.push(value);
 }
 
-export default class ReactNativeNavigationModule extends RehabModule {
+export class ReactNativeNavigationModule extends RehabModule {
   effectsKey = '[navigation]';
   screen = {};
 
