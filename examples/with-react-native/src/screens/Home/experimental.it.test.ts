@@ -1,12 +1,13 @@
-import 'react-native';
-import {TypedTestDriverFactory, Validator} from 'rehabjs';
-import {ReactNativeNavigationModule} from 'rehabjs';
-import {ReactNativeModule} from 'rehabjs';
+import {
+  TypedReactNativeModule,
+  TypedReactNativeNavigationModule,
+  TypedTestDriverFactory,
+} from 'rehabjs';
 import * as screens from '../index';
 
 const driverFactory = new TypedTestDriverFactory(
   () => require('./index').default,
-  [new ReactNativeNavigationModule(), new ReactNativeModule()],
+  [TypedReactNativeNavigationModule.jsModule, TypedReactNativeModule.jsModule],
 );
 
 describe('Home', () => {
@@ -35,28 +36,3 @@ describe('Home', () => {
       .validate();
   });
 });
-
-class TypedReactNativeNavigationModule {
-  private static moduleName = 'navigation';
-
-  static tap = (scenario: any) => scenario.tap();
-
-  static validate = (...expected: ScreenTransitionExpectation[]): Validator => {
-    return {
-      moduleName: TypedReactNativeNavigationModule.moduleName,
-      validationData: expected,
-    };
-  };
-}
-
-interface ScreenTransitionExpectation {
-  name: string;
-  operation: string;
-  passProps: any;
-}
-
-class TypedReactNativeModule {
-  static click = (buttonId: string) => {
-    return (scenario: any) => scenario.click(buttonId);
-  };
-}
