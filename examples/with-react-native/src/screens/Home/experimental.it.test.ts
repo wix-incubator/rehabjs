@@ -1,5 +1,5 @@
 import 'react-native';
-import {TypedTestDriverFactory} from 'rehabjs';
+import {TypedTestDriverFactory, Validator} from 'rehabjs';
 import {ReactNativeNavigationModule} from 'rehabjs';
 import {ReactNativeModule} from 'rehabjs';
 import * as screens from '../index';
@@ -19,17 +19,20 @@ describe('Home', () => {
       .do(TypedReactNativeModule.click('link_Navigation'))
       .end();
 
-    await driver.validate({
-      ...TypedReactNativeNavigationModule.validate({
-        name: screens.NAVIGATION.id,
-        operation: 'push',
-        passProps: expect.objectContaining({
-          title: 'Navigation',
-          description: 'Test cases for React Native Navigation',
-          id: screens.NAVIGATION.id,
+    let rnnValidator = TypedReactNativeNavigationModule.validate;
+    await driver
+      .expect(
+        rnnValidator({
+          name: screens.NAVIGATION.id,
+          operation: 'push',
+          passProps: expect.objectContaining({
+            title: 'Navigation',
+            description: 'Test cases for React Native Navigation',
+            id: screens.NAVIGATION.id,
+          }),
         }),
-      }),
-    });
+      )
+      .validate();
   });
 });
 
@@ -38,14 +41,15 @@ class TypedReactNativeNavigationModule {
 
   static tap = (scenario: any) => scenario.tap();
 
-  static validate = (...expected: ScreenTransitionValidator[]) => {
+  static validate = (...expected: ScreenTransitionExpectation[]): Validator => {
     return {
-      [`[${TypedReactNativeNavigationModule.moduleName}]`]: expected,
+      moduleName: TypedReactNativeNavigationModule.moduleName,
+      validationData: expected,
     };
   };
 }
 
-interface ScreenTransitionValidator {
+interface ScreenTransitionExpectation {
   name: string;
   operation: string;
   passProps: any;

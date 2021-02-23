@@ -8,8 +8,14 @@ export class TestDriverOptions {
   passProps: any;
 }
 
+export interface Validator {
+  moduleName: string;
+  validationData: any;
+}
+
 export class TypedTestDriver {
   private scenario: any;
+  private expectedData: any = {};
 
   constructor(private jsDriver: any) { }
 
@@ -28,8 +34,13 @@ export class TypedTestDriver {
     return this;
   }
 
-  public async validate(expectedData: any) {
-    await this.scenario.validate(expectedData);
+  public expect(validator: Validator): this {
+    this.expectedData[`[${validator.moduleName}]`] = validator.validationData;
+    return this;
+  }
+
+  public async validate() {
+    await this.scenario.validate(this.expectedData);
   }
 }
 
